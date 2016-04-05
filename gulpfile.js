@@ -7,7 +7,7 @@ var gulp = require('gulp'),
     data = require('gulp-data'),
     rename = require('gulp-rename'),
     uglify = require('gulp-uglify'),
-    scss = require("gulp-scss");
+    sass = require('gulp-sass');
 
 // Data for liquid
 var locals = require('./src/data');
@@ -26,11 +26,8 @@ gulp.task('bs-reload', function () {
   browserSync.reload();
 });
 
-//SCSS nefunguje
-//tedy smazat carts.css az bude fungovat.
+
 //fucking swatches
-
-
 //Clear Dist folder!!!
 
 gulp.task('js', function() {
@@ -47,8 +44,7 @@ gulp.task('scss', function() {
   gulp.src('src/style.scss')
     .pipe(rename('quickbeam.scss'))
     .pipe(gulp.dest('dist/'))
-    .pipe(scss({"bundleExec": true}))
-    .pipe(rename('quickbeam.css'))
+    .pipe(sass().on('error', sass.logError))
     .pipe(gulp.dest('demo/'))
     .pipe(browserSync.reload({stream:true}))
 });
