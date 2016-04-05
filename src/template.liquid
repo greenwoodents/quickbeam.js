@@ -1,0 +1,29 @@
+<div id="quick-cart">
+  {% assign cart_total_count = 0 %}
+  {% if cart.items.size > 0 %}
+    {% for cart_product in cart.items %}
+      <div class="quick-cart-product quick-cart-product-static" id="quick-cart-product-{{ cart_product.variant_id }}" title="{{ cart_product.title | escape }}">
+        <div>
+          <img src="{{ cart_product.image | img_url: '60x60' }}" alt="{{ cart_product.title | escape }}">
+          <span class="s1">{{ cart_product.price | money }}</span>
+          <span class="s2">
+            {% unless cart_product.variant.title contains 'Default' %}
+              {{ cart_product.variant.option1 }}
+            {% endunless %}
+          </span>
+        </div>
+        <span id="quick-cart-product-count-{{ cart_product.variant_id }}" class="count{% if cart_product.quantity <= 1 %} hide{% endif %}">{{ cart_product.quantity }}</span>
+        <span data-id="{{ cart_product.variant_id }}" class="quick-cart-product-remove remove"></span>
+        <span data-id="{{ cart_product.variant_id }}" class="quick-cart-product-removeall removeall"></span>
+      </div>
+      {% assign cart_total_count = cart_total_count | plus: cart_product.quantity %}
+    {% endfor %}
+  {% endif %}
+  <a id="quick-cart-pay" href="/cart" class="cart-ico{% if cart.items.size > 0 %} open{% endif %}">
+    <span>
+      <strong class="quick-cart-text">Pay<br></strong>
+      <span id="quick-cart-price">{% if cart.items.size > 0 %}{{ cart.total_price | money }}{% else %}{{ 0 | money  }}{% endif %}</span>
+      <span id="quick-cart-pay-total-count">{{ cart_total_count }}</span>
+    </span>
+  </a>
+</div>

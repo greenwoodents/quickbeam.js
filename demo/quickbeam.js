@@ -711,8 +711,3 @@ var Quickbeam = (function () {
   };
 
 })();
-
-// Usage:
-var cart = Quickbeam.init({
-  'animationLib': 'gsap'
-});
