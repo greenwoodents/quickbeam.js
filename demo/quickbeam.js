@@ -1,8 +1,4 @@
 var Quickbeam = (function () {
-  //TODO add optimistcit ui
-  //TODO Whole script is written for buying on detail page, what if we want to use that even on homepage?
-  //TODO add feature checker and remove this polyfills and global element proto changes.
-
   // Instance stores a reference to the Singleton
   var instance;
 
@@ -24,11 +20,6 @@ var Quickbeam = (function () {
     var imageUrl;
     var count;
 
-    //TODO each call
-    var swatchesContent = '';
-    var color = '#000';
-
-    // Globalni promenne, ktere zajistuji zobrazeni tlacitka na odebrani vsech ks produktu pote, co odeberu 3 ks toho sameho produktu
     var last_removed_variant;
     var last_removed_variant_count;
 
@@ -40,8 +31,7 @@ var Quickbeam = (function () {
       };
 
       setPayButtonAction();
-      //TODO Make attribute overide default elements;
-      //TODO error handling
+
       if (cartPay.length > 0) {return false;}
 
       if (att.animationLib === 'gsap') {
@@ -159,16 +149,12 @@ var Quickbeam = (function () {
           cartPay.classList.add("open");
         }
 
-        //TODO make it better
         count = parseInt(document.querySelector('.quantity-selector').value);
 
-        // Pridani produktoveho boxu do kosiku   {
         addProduct();
 
-        //Animate adding of product to product cart
         animateProduct();
 
-        //TODO: add JS animations;
         if (ProductImage) {
           ProductImage.classList.add("animate");
           window.setTimeout(function(){
@@ -204,7 +190,7 @@ var Quickbeam = (function () {
         console.error("Not able to select variant");
         variant = '';
       }
-      //TODO resolve ID returning in variant Selector.
+
       var cart_product = document.querySelector("#quick-cart-product-" + variantId) || false;
 
       if (cart && ProductImage && cart_product == false ) {
@@ -455,7 +441,6 @@ var Quickbeam = (function () {
     // Arguments:
     // Returning nothing, procedure.
     function ajaxAddProductToCart() {
-      //TODO refactor get lost of product box
       var product_box = document.getElementById("quick-cart-product-" + variantId);
 
       var product_count_box = document.getElementById("quick-cart-product-count-" + variantId);
@@ -550,23 +535,19 @@ var Quickbeam = (function () {
 
     // procedure for changing cart link destionation depending on size of screen.
     function setPayButtonAction() {
-      //TODO refactor use javascript media queries.
       if (cartPay) {
         // Cart is fixed in right bottom of screen
         var window_w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 
         if (window_w > 600) {
           cartPay.setAttribute("href", "/checkout");
-          //TODO solve this by CSS.
           cartPay.classList.remove("cart-ico");
         } else {
           cartPay.setAttribute("href", "/cart");
-          //TODO solve this by CSS.
           cartPay.classList.add("cart-ico");
         }
       }
     }
-
     //public methods
     return self;
   };
