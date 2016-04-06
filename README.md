@@ -11,7 +11,7 @@ This plugin is made for Shopify.com but It should not be problem convert it to o
 ![Sooo animated](images/animation.gif)
 ---
 
-### Installation on Shopify.com
+## Installation on Shopify.com
 
 Download [this repo](dist/ https://github.com/greenwoodents/quickbeam.js/archive/master.zip).
 Import `dist/quickbeam.min.js` and `dist/quickbeam.scss` files to your Shopify `assets/` folder.
@@ -31,7 +31,7 @@ Add this `<script>` tag before closing `</body>` tag in your `layout/template.li
 </script>
 ```
 
-### Options
+## Options
 
 All of available options.
 
@@ -44,14 +44,14 @@ All of available options.
 }
 ```
 
-#### animationlibrary
+### animationlibrary
 
 If you are using [GSAP](https://github.com/greensock/GreenSock-JS), you can use this animation library with Quickbeam. Pass this parameter to init function. If not vanilla javascript animation is used.
 ``` javascript
   'animationLib': 'gsap' //Or falling to vanilla js animation.
 ```
 
-#### variantSelector
+### variantSelector
 
 If you have special selector of variant type in your e-commerce and default function is not able to select variant for you. You can make your own selector and return variant.
 
