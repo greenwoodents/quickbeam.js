@@ -9,13 +9,13 @@ This plugin is made for Shopify.com but It should not be problem convert it to o
 * [Live Demo 2](http://storiez.co/collections/mens-sweatshirts/products/basic-gilet-navy?variant=16610096455)
 
 ![Sooo animated](images/animation.gif)
+---
 
 ### Installation on Shopify.com
 
-Download [dist](dist/) folder.
-
-Import `quickbeam.min.js` and `quickbeam.scss` files to your Shopify `assets/` folder.
-File `quickbeam.liquid` import in to `templates/` folder.
+Download [this repo](dist/ https://github.com/greenwoodents/quickbeam.js/archive/master.zip).
+Import `dist/quickbeam.min.js` and `dist/quickbeam.scss` files to your Shopify `assets/` folder.
+File `dist/quickbeam.liquid` import in to `templates/` folder.
 
 Add this `<script>` tag before closing `</body>` tag in your `layout/template.liquid` file.
 ``` javascript
@@ -107,3 +107,5 @@ See also the list of [contributors](https://github.com/greenwoodents/quickbeam.j
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+Crafted by ![Logo](images/logo.png "ents.co")
