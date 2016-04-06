@@ -108,4 +108,4 @@ See also the list of [contributors](https://github.com/greenwoodents/quickbeam.j
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-Crafted by ![Logo](images/logo.png "ents.co")
+![Logo](images/logo.png "ents.co")
