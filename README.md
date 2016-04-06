@@ -3,8 +3,8 @@
 Animated cart for Shopify.com templates.
 This plugin is made for Shopify.com but It should not be problem convert it to other e-commerce, if you want fork this repo. :)
 
-* [Live Demo 1][https://g.ents.co/collections/frontpage/products/shirt-no-2]
-* [Live Demo 2][http://storiez.co/collections/mens-sweatshirts/products/basic-gilet-navy?variant=16610096455]
+* [Live Demo 1](https://g.ents.co/collections/frontpage/products/shirt-no-2)
+* [Live Demo 2](http://storiez.co/collections/mens-sweatshirts/products/basic-gilet-navy?variant=16610096455)
 
 ![Sooo animated](images/animation.gif)
 
@@ -44,7 +44,7 @@ All of available options.
 
 #### Animation Library
 
-If you are using [GSAP][https://github.com/greensock/GreenSock-JS], you can use this animation library with Quickbeam. Pass this parameter to init function. If not vanilla javascript animation is used.
+If you are using [GSAP](https://github.com/greensock/GreenSock-JS), you can use this animation library with Quickbeam. Pass this parameter to init function. If not vanilla javascript animation is used.
 ``` javascript
   'animationLib': 'gsap' //Or falling to vanilla js animation.
 ```
