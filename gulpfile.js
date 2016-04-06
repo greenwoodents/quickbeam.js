@@ -7,12 +7,8 @@ var gulp = require('gulp'),
     data = require('gulp-data'),
     rename = require('gulp-rename'),
     uglify = require('gulp-uglify'),
-    sass = require('gulp-sass');
-
-// Data for liquid
-var locals = require('./src/data');
-console.log(locals.shopify);
-
+    sass = require('gulp-sass'),
+    autoprefixer = require('gulp-autoprefixer');
 
 gulp.task('browser-sync', function() {
   browserSync({
@@ -26,10 +22,6 @@ gulp.task('bs-reload', function () {
   browserSync.reload();
 });
 
-
-//fucking swatches
-//Clear Dist folder!!!
-
 gulp.task('js', function() {
   gulp.src('src/script.js')
     .pipe(rename('quickbeam.js'))
@@ -42,6 +34,10 @@ gulp.task('js', function() {
 
 gulp.task('scss', function() {
   gulp.src('src/style.scss')
+    .pipe(autoprefixer({
+      browsers: ['last 4 versions'],
+      cascade: false
+    }))
     .pipe(rename('quickbeam.scss'))
     .pipe(gulp.dest('dist/'))
     .pipe(sass().on('error', sass.logError))
@@ -54,7 +50,6 @@ gulp.task('liquid', function() {
     .pipe(rename('quickbeam.liquid'))
     .pipe(gulp.dest('dist/'))
 });
-
 
 
 gulp.task('default', ['browser-sync', 'js', 'scss', 'liquid'], function () {
