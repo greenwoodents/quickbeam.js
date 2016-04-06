@@ -1,144 +1,7 @@
 var Quickbeam = (function () {
-
-
   //TODO add optimistcit ui
   //TODO Whole script is written for buying on detail page, what if we want to use that even on homepage?
   //TODO add feature checker and remove this polyfills and global element proto changes.
-
-  // querySelector pro IE 8
-  if (!document.querySelector) {
-    document.querySelector = function(selector) {
-      var head = document.documentElement.firstChild;
-      var styleTag = document.createElement("STYLE");
-      head.appendChild(styleTag);
-      document.__qsResult = [];
-
-      styleTag.styleSheet.cssText = selector + "{x:expression(document.__qsResult.push(this))}";
-      window.scrollBy(0, 0);
-      head.removeChild(styleTag);
-
-      var result = [];
-      for (var i in document.__qsResult)
-          result.push(document.__qsResult[i]);
-      return result;
-    }
-  }
-
-  Element.prototype.hasClass = function(className) {
-      return new RegExp(' ' + className + ' ').test(' ' + this.className + ' ');
-  };
-
-  Element.prototype.addClass = function(className) {
-    if (!this.hasClass(className)) {
-      this.className += ' ' + className;
-    }
-
-    return this;
-  };
-
-  Element.prototype.removeClass = function(className) {
-      var newClass = ' ' + this.className.replace(/[\t\r\n]/g, ' ') + ' '
-      if (this.hasClass(className)) {
-          while (newClass.indexOf( ' ' + className + ' ') >= 0) {
-              newClass = newClass.replace(' ' + className + ' ', ' ');
-          }
-          this.className = newClass.replace(/^\s+|\s+$/g, ' ');
-      }
-
-      return this;
-  };
-
-  Element.prototype.toggleClass = function(className) {
-      var newClass = ' ' + this.className.replace(/[\t\r\n]/g, " ") + ' ';
-      if (this.hasClass(className)) {
-          while (newClass.indexOf(" " + className + " ") >= 0) {
-              newClass = newClass.replace(" " + className + " ", " ");
-          }
-          this.className = newClass.replace(/^\s+|\s+$/g, ' ');
-      } else {
-          this.className += ' ' + className;
-      }
-
-      return this;
-  };
-
-  // TODO remove this
-  Element.prototype.data = function(attrName, value) {
-      if (typeof(value) === "undefined") {
-          return this.getAttribute('data-' + attrName);
-      } else {
-          this.setAttribute('data-' + attrName, value);
-          return this;
-      }
-  };
-  //
-  // var ajax = {};
-  // ajax.x = function() {
-  //     if (typeof XMLHttpRequest !== 'undefined') {
-  //         return new XMLHttpRequest();
-  //     }
-  //     var versions = [
-  //         "MSXML2.XmlHttp.6.0",
-  //         "MSXML2.XmlHttp.5.0",
-  //         "MSXML2.XmlHttp.4.0",
-  //         "MSXML2.XmlHttp.3.0",
-  //         "MSXML2.XmlHttp.2.0",
-  //         "Microsoft.XmlHttp"
-  //     ];
-  //
-  //     var xhr;
-  //
-  //     for(var i = 0; i < versions.length; i++) {
-  //         try {
-  //             xhr = new ActiveXObject(versions[i]);
-  //             break;
-  //         } catch (e) {
-  //         }
-  //     }
-  //     return xhr;
-  // };
-  //
-  // ajax.send = function(url, callback, method, data, sync) {
-  //   var x = ajax.x();
-  //   x.open(method, url, sync);
-  //   x.onreadystatechange = function() {
-  //     if (x.readyState == 4) {
-  //       callback(JSON.parse(x.responseText))
-  //     }
-  //   };
-  //   if (method == 'POST') {
-  //     x.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-  //   }
-  //   x.send(data)
-  // };
-  //
-  // ajax.get = function(url, data, callback, sync) {
-  //     var query = [];
-  //     for (var key in data) {
-  //         query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
-  //     }
-  //     ajax.send(url + (query.length ? '?' + query.join('&') : ''), callback, 'GET', null, sync)
-  // };
-  //
-  // ajax.post = function(url, data, callback, sync) {
-  //     var query = [];
-  //     for (var key in data) {
-  //         query.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]));
-  //     }
-  //     ajax.send(url, callback, 'POST', query.join('&'), sync)
-  // };
-
-
-  function loadScript(url, callback) {
-    //SRC: http://stackoverflow.com/questions/950087/include-a-javascript-file-in-another-javascript-file
-    var head = document.getElementsByTagName('head')[0];
-    var script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = url;
-    script.onreadystatechange = callback;
-    script.onload = callback;
-    head.appendChild(script);
-  }
 
   // Instance stores a reference to the Singleton
   var instance;
@@ -180,14 +43,13 @@ var Quickbeam = (function () {
       //TODO Make attribute overide default elements;
       //TODO error handling
       if (cartPay.length > 0) {return false;}
-      //
 
       if (att.animationLib === 'gsap') {
-        loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js');
+        if (typeof TweenMax !== 'function') {throw "GSAP is not loaded."}
       }
 
       if (price) {
-          price = price.innerHTML;
+        price = price.innerHTML;
       }
 
       if (ProductImage) {
@@ -209,7 +71,7 @@ var Quickbeam = (function () {
       //Add event listeners
       var listeners = {
         '.quick-cart-product-remove': function(el){
-            var id = el.data("id");
+            var id = el.getAttribute("data-id");
             var product = el.parentNode;
             var productCount = product.querySelector('.count');
             var count = parseInt(productCount.innerText);
@@ -221,7 +83,7 @@ var Quickbeam = (function () {
 
             if (count <= 0) {
               //Animation
-              product.addClass("remove-product");
+              product.classList.add("remove-product");
               window.setTimeout(function() {
                 product.classList.remove("remove-product");
                 removeProduct(product);
@@ -239,7 +101,7 @@ var Quickbeam = (function () {
 
 
               if (count <= 1) {
-                productCount.addClass("hide");
+                productCount.classList.add("hide");
               }
             }
 
@@ -251,7 +113,7 @@ var Quickbeam = (function () {
             }
 
             if (3 == last_removed_variant_count && count > 1) {
-              product.addClass("show-remove-all");
+              product.classList.add("show-remove-all");
             }
 
 
@@ -259,12 +121,12 @@ var Quickbeam = (function () {
           },
 
           '.quick-cart-product-removeall': function(el) {
-              var id = el.data("id");
+              var id = el.getAttribute("data-id");
               var product = el.parentNode;
 
               if (!(product && cart)) {return false}
 
-              product.addClass("remove-product");
+              product.classList.add("remove-product");
               window.setTimeout(function() {
                 removeProduct(product_box);
               }, 200);
@@ -288,36 +150,31 @@ var Quickbeam = (function () {
         addToCart.addEventListener('click', start, false);
       }
 
-
-
-
       function start(e){
         e.preventDefault();
         this.blur();
 
         // display pay button if is not
         if (!(cartPay.classList.contains('open'))) {
-          cartPay.addClass("open");
+          cartPay.classList.add("open");
         }
 
         //TODO make it better
         count = parseInt(document.querySelector('.quantity-selector').value);
 
-        // Pridani produktoveho boxu do kosiku
+        // Pridani produktoveho boxu do kosiku   {
         addProduct();
 
         //Animate adding of product to product cart
         animateProduct();
 
-        //TODO: add inline animation;
+        //TODO: add JS animations;
         if (ProductImage) {
-          ProductImage.addClass("animate");
+          ProductImage.classList.add("animate");
           window.setTimeout(function(){
             ProductImage.classList.remove("animate");
           }, 400);
         }
-
-
       }
 
       return false;
@@ -325,25 +182,38 @@ var Quickbeam = (function () {
 
     //Procedure for creating product in cart and displaying after animation.
     function addProduct() {
-      var size;
-      //Select product in cart or false.
-      [].forEach.call(document.querySelectorAll('.quickbeam-variant'), function(el){
-        if (el.checked) {
-          variantId = parseInt(el.getAttribute('quickbeam-value'));
-          size = el.getAttribute('value');
-        }
-      });
+      var variant;
 
+      //Calling select variant from attributes or falling back to default select variant.
+      if (typeof att.variantSelector === 'function') {
+        variant = att.variantSelector.call();
+        if (typeof variant !== string) {
+          console.error("variantSelector not returning a string.");
+          variant = '';
+        }
+      } else {
+        [].forEach.call(document.querySelectorAll('.quickbeam-variant'), function(el){
+          if (el.checked) {
+            variantId = parseInt(el.getAttribute('quickbeam-value'));
+            variant = el.getAttribute('value');
+          }
+        });
+      }
+
+      if (typeof variant === 'undefined') {
+        console.error("Not able to select variant");
+        variant = '';
+      }
+      //TODO resolve ID returning in variant Selector.
       var cart_product = document.querySelector("#quick-cart-product-" + variantId) || false;
 
       if (cart && ProductImage && cart_product == false ) {
-
         //Create product box
         var element = createProductBox({
           id: variantId,
           price: price,
           image: imageUrl,
-          size: size,
+          size: variant,
           color: color
         });
         //Append element to cart
@@ -368,7 +238,8 @@ var Quickbeam = (function () {
                       '<span class="quick-cart-product-removeall removeall" data-id="'+ data.id +'"></span>';
 
       var div = document.createElement("div");
-      div.addClass("quick-cart-product quick-cart-product-static");
+      div.classList.add("quick-cart-product");
+      div.classList.add("quick-cart-product-static");
       div.setAttribute("id", "quick-cart-product-" + data.id);
       div.style.opacity = 0;
       div.innerHTML = template;
@@ -419,94 +290,94 @@ var Quickbeam = (function () {
       var element = createAnimatedObject();
       var c = getAnimationCoordinations(element);
 
-
       if (att.animationLib === 'gsap') {
-        element.style.position = 'absolute';
-        element.addClass("run");
-
-        var countBox = document.getElementById("quick-cart-product-count-" + variantId);
-        if (countBox) {
-          countBox.classList.remove('fadeUp')
-          countBox.classList.add('fadeDown')
-        }
-
-        TweenMax.to(element, 1, {bezier:{type:"soft", values:c.through}, ease:Power1.easeInOut});
-
-        setTimeout(function(){
-          element.style.opacity = 0;
-          document.body.removeChild(element);
-
-          setTimeout(function(){
-            ajaxAddProductToCart();
-          },100)
-        }, 1000);
-
+        gsapAnimation(element, c);
       } else {
-        //Vanilla JS
-        var cordeIndex = 0;
-        var coord = function (x,y) {
-          if(!x) var x=0; if(!y) var y=0;
-          return {x: x, y: y};
-        };
+        fallbackAnimation(element, c);
+      }
+    }
 
-        var bezier = function(t, p0, p1, p2, p3){
-          var cX = 3 * (p1.x - p0.x),
-              bX = 3 * (p2.x - p1.x) - cX,
-              aX = p3.x - p0.x - cX - bX;
+    function gsapAnimation(element, c) {
+      element.style.position = 'absolute';
+      element.classList.add("run");
 
-          var cY = 3 * (p1.y - p0.y),
-              bY = 3 * (p2.y - p1.y) - cY,
-              aY = p3.y - p0.y - cY - bY;
-
-          var x = (aX * Math.pow(t, 3)) + (bX * Math.pow(t, 2)) + (cX * t) + p0.x;
-          var y = (aY * Math.pow(t, 3)) + (bY * Math.pow(t, 2)) + (cY * t) + p0.y;
-
-          return {x: x, y: y};
-        };
-        //Coordinations
-        //Start
-        var P1 = coord(c.start.x,c.start.y);
-        //HELPERS
-        var P2 = coord(c.start.x-300,c.final.y);
-        var P3 = coord(c.start.x+500,c.start.y+500);
-        //final destination
-        var P4 = coord(c.final.x,c.final.y);
-
-        //Actaully animate.
-        var stage = 0;
-        element.style.position = 'absolute';
-        element.addClass("run");
-        animate({
-          time: 1000,
-
-          run: function(t) {
-            if(t == 1) {
-              setTimeout(function(){
-                element.style.opacity = 0;
-                document.body.removeChild(element);
-
-                setTimeout(function(){
-                  ajaxAddProductToCart();
-                },1000)
-              }, 500);
-
-            }
-            //find position on bezier curve
-            var curpos = bezier(t,P1,P2,P3,P4)
-
-            // element.style.top = Math.round(curpos.y) + "px";
-            // element.style.left = Math.round(curpos.x) + "px";
-            var trans = "translate("+Math.round(curpos.x)+"px,"+Math.round(curpos.y)+"px)";
-
-            element.style.webkitTransform = trans;
-            element.style.transform = trans;
-
-          }
-        });
-
+      var countBox = document.getElementById("quick-cart-product-count-" + variantId);
+      if (countBox) {
+        countBox.classList.remove('fadeUp')
+        countBox.classList.add('fadeDown')
       }
 
+      TweenMax.to(element, 1, {bezier:{type:"soft", values:c.through}, ease:Power1.easeInOut});
 
+      setTimeout(function(){
+        element.style.opacity = 0;
+        document.body.removeChild(element);
+
+        setTimeout(function(){
+          ajaxAddProductToCart();
+        },100)
+      }, 1000);
+    }
+
+    //Vanilla JS Animation
+    function fallbackAnimation(element, c) {
+      var cordeIndex = 0;
+      var coord = function (x,y) {
+        if(!x) var x=0; if(!y) var y=0;
+        return {x: x, y: y};
+      };
+
+      var bezier = function(t, p0, p1, p2, p3){
+        var cX = 3 * (p1.x - p0.x),
+            bX = 3 * (p2.x - p1.x) - cX,
+            aX = p3.x - p0.x - cX - bX;
+
+        var cY = 3 * (p1.y - p0.y),
+            bY = 3 * (p2.y - p1.y) - cY,
+            aY = p3.y - p0.y - cY - bY;
+
+        var x = (aX * Math.pow(t, 3)) + (bX * Math.pow(t, 2)) + (cX * t) + p0.x;
+        var y = (aY * Math.pow(t, 3)) + (bY * Math.pow(t, 2)) + (cY * t) + p0.y;
+
+        return {x: x, y: y};
+      };
+      //Coordinations
+      //Start
+      var P1 = coord(c.start.x,c.start.y);
+      //HELPERS
+      var P2 = coord(c.start.x-300,c.final.y);
+      var P3 = coord(c.start.x+500,c.start.y+500);
+      //final destination
+      var P4 = coord(c.final.x,c.final.y);
+
+      //Actaully animate.
+      var stage = 0;
+      element.style.position = 'absolute';
+      element.classList.add("run");
+      animate({
+        time: 1000,
+
+        run: function(t) {
+          if(t == 1) {
+            setTimeout(function(){
+              element.style.opacity = 0;
+              document.body.removeChild(element);
+
+              setTimeout(function(){
+                ajaxAddProductToCart();
+              },1000)
+            }, 500);
+
+          }
+          //find position on bezier curve
+          var curpos = bezier(t,P1,P2,P3,P4)
+
+          var trans = "translate("+Math.round(curpos.x)+"px,"+Math.round(curpos.y)+"px)";
+
+          element.style.webkitTransform = trans;
+          element.style.transform = trans;
+        }
+      });
     }
 
     // Function for creating DOM element from pre-set template.
@@ -526,7 +397,9 @@ var Quickbeam = (function () {
 
       // Animace pridani produktu k produktovemu boxu
       var div = document.createElement("div");
-      div.addClass("quick-cart-product quick-cart-animated-product animated");
+      div.classList.add("quick-cart-product");
+      div.classList.add("quick-cart-product");
+      div.classList.add("animated");
       div.setAttribute("id", "quick-cart-product-animated");
 
       if (att.animationLib === 'gsap') {
@@ -548,13 +421,12 @@ var Quickbeam = (function () {
     // Arguments: element from DOM.
     // Returning object { start:{x,y}, finish: {x,y} }.
     function getAnimationCoordinations(element) {
-      //element == div1
       var child = element.querySelector('div');
-      // Vypocet začateční a cilové pozice animace
+      // Calc of start and finish positions of animation.
       var start = ProductImage.getBoundingClientRect();
       var final = document.querySelector("#quick-cart-product-" + variantId).getBoundingClientRect();
       var fTop = final.top;
-      // Pricteni k Y vysku odscrollovani
+      // adding scroll heihft to Y
       var doc = document.documentElement;
       var left = (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0);
       var top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
@@ -578,7 +450,6 @@ var Quickbeam = (function () {
       }
     }
 
-
     // Function for adding product to shopify cart using AJAX
     // Private function
     // Arguments:
@@ -594,7 +465,7 @@ var Quickbeam = (function () {
       product_count += count;
       product_count_box.innerText = product_count;
       if (product_count > 1) {
-        product_count_box.removeClass("hide");
+        product_count_box.classList.remove("hide");
       }
       // aktualizace celkoveho poctu ks pro mobilni vzhled
       cartPay_total_count_value += count;
@@ -610,7 +481,7 @@ var Quickbeam = (function () {
       }
 
       if (product_box) {
-        product_box.removeClass("show-remove-all");
+        product_box.classList.remove("show-remove-all");
         last_removed_variant_count = 0;
       }
 
@@ -662,7 +533,7 @@ var Quickbeam = (function () {
           cartPrice.innerText = Shopify.formatMoney(response.total_price);
           // Zobrazeni tlacitka na nakup
           if (response.total_price <= 0) {
-            cartPay.removeClass("open");
+            cartPay.classList.remove("open");
           }
         }
       };
@@ -679,18 +550,19 @@ var Quickbeam = (function () {
 
     // procedure for changing cart link destionation depending on size of screen.
     function setPayButtonAction() {
-      //TODO refactor use javascript media queries?
+      //TODO refactor use javascript media queries.
       if (cartPay) {
-        var window_w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;  // kosik je fixovany v pravem spodnim rohu = souradnice je zavisla na velikost okna prohlizece
+        // Cart is fixed in right bottom of screen
+        var window_w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 
         if (window_w > 600) {
           cartPay.setAttribute("href", "/checkout");
-            //TODO solve this by CSS.
-          cartPay.removeClass("cart-ico");
+          //TODO solve this by CSS.
+          cartPay.classList.remove("cart-ico");
         } else {
           cartPay.setAttribute("href", "/cart");
           //TODO solve this by CSS.
-          cartPay.addClass("cart-ico");
+          cartPay.classList.add("cart-ico");
         }
       }
     }
