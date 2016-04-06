@@ -19,6 +19,7 @@ var Quickbeam = (function () {
     var variantId;
     var imageUrl;
     var count;
+    var color = '#000';
 
     var last_removed_variant;
     var last_removed_variant_count;
