@@ -1,94 +1,107 @@
-# Quickbeam
+# Quickbeam.js
 
 Animated cart for Shopify.com templates.
+This plugin is made for Shopify.com but It should not be problem convert it to other e-commerce, if you want fork this repo. :)
 
-## Getting Started
+* [Live Demo 1][https://g.ents.co/collections/frontpage/products/shirt-no-2]
+* [Live Demo 2][http://storiez.co/collections/mens-sweatshirts/products/basic-gilet-navy?variant=16610096455]
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+![Sooo animated](images/animation.gif)
 
-### Instalation
+### Installation on Shopify.com
 
-What things you need to install the software and how to install them
+Download [dist](dist/) folder.
 
-```
-Give examples
-```
+Import `quickbeam.min.js` and `quickbeam.scss` files to your Shopify `assets/` folder.
+File `quickbeam.liquid` import in to `templates/` folder.
 
-### Development
-
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
-<!--
-### Installing
-
-A step by step series of examples that tell you have to get a development env running
-
-Stay what the step will be
-
-```
-Give the example
+Add this `<script>` tag before closing `</body>` tag in your `layout/template.liquid` file.
+``` javascript
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js"></script>
+{{ 'quickbeam.min.js' | asset_url | script_tag }}
+<script>
+  var cart = Quickbeam.init({
+    'animationLib': 'gsap',
+    'variantSelector': function () {
+      // Return selected variant
+    }
+  });
+</script>
 ```
 
-And repeat
+### Options
 
-```
-until finished
-```
+All of available options.
 
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
+``` javascript
+{
+  'animationLib': 'gsap',
+  'variantSelector': function () {
+    // Return selected variant
+  }
+}
 ```
 
-### And coding style tests
+#### Animation Library
 
-Explain what these tests test and why
-
+If you are using [GSAP][https://github.com/greensock/GreenSock-JS], you can use this animation library with Quickbeam. Pass this parameter to init function. If not vanilla javascript animation is used.
+``` javascript
+  'animationLib': 'gsap' //Or falling to vanilla js animation.
 ```
-Give an example
+
+#### variant Selector
+
+If you have special selector of variant type in your e-commerce and default function is not able to select variant for you. You can make your own selector and return variant.
+
+Expecting `string` in `return`;
+``` javascript
+  'variantSelector': function () {
+    // Return selected variant in string.
+  }
 ```
+## Browser Support
 
-## Deployment
+Quickbeam depends on the following browser APIs:
 
-Add additional notes about how to deploy this on a live system
+* [classList](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList)
+* ES5 array methods: [forEach](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach)
+* [requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame)
 
-## Built With
+It supports the following natively:
 
-* Dropwizard - Bla bla bla
-* Maven - Maybe
-* Atom - ergaerga
+* Chrome 24+
+* Firefox 23+
+* Safari 6.1+
+* Opera 15+
+* Edge 12+
+* IE 10+
+* iOS Safari 7.1+
+* Android Browser 4.4+
+
+To support older browsers, consider including [polyfills/shims](https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-Browser-Polyfills) for the APIs listed above. There are **no plans to include any in the library**, in the interest of file size.
+
+## Development
+
+Install development dependencies
+```
+npm install
+```
+Run gulp.js
+```
+gulp
+```
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
+Feel free to open pull request.
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Filip Danisko** - *Rework* - [filipdanisko](https://github.com/filipdanisko)
+* **Petr Goca** - *Initial work and demo page* - [petr-goca](https://github.com/petr-goca)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/greenwoodents/quickbeam.js/contributors) who participated in this project.
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-  Thanks Peter for laying up solid ground for this small plugin https://github.com/petr-goca
-
--->
