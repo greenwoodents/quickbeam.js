@@ -6,7 +6,6 @@ This plugin is made for Shopify.com but It should not be problem convert it to o
 ####Demos
 
 * [Live Demo 1](https://g.ents.co/collections/frontpage/products/shirt-no-2)
-* [Live Demo 2](http://storiez.co/collections/mens-sweatshirts/products/basic-gilet-navy?variant=16610096455)
 
 ![Sooo animated](images/animation.gif)
 ---
